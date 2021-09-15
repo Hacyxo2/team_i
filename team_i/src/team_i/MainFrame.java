@@ -13,7 +13,7 @@ public class MainFrame extends JFrame {
 	{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Play Car");
-		setSize(800, 600);
+		setSize(1000, 600);
 		setPreferredSize(getPreferredSize());
 		setVisible(true);
 		
