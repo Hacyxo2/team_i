@@ -18,8 +18,7 @@ public class MainFrame extends JFrame {
 		setVisible(true);
 		System.out.println("test");
 		add(new Screen());
-		//현재 commit을 한 상태라 아래 push Head 상태인데
-		//이렇게 설정하고 저장을 한다음
+		
 		validate();
 	}
 }
