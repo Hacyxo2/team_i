@@ -1,4 +1,5 @@
 package team_i;
+
 import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -18,7 +19,7 @@ public class Screen extends Canvas implements KeyListener {
 	
 	public Screen() {
 		try {
-			image = ImageIO.read(new File("src/car.png"));
+			image = ImageIO.read(new File("image/car.png"));
 			
 			addKeyListener(this);
 		} catch (IOException e) {
@@ -65,3 +66,4 @@ public class Screen extends Canvas implements KeyListener {
 	}
 
 }
+
