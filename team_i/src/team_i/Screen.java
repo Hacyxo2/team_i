@@ -11,13 +11,13 @@ public class Screen extends Canvas implements KeyListener {
 
 
 	
-	Car car[] = new Car[2];
+	Car1 car[] = new Car1[2];
 	
 	private static final long serialVersionUID = 1L;
 	
 	public Screen() {
-		car[0] = new Car(0, 0, "image/car.png");
-		car[1] = new Car(50, 100, "image/car.png");
+		car[0] = new Car1(0, 0, "image/car.png");
+		
 			
 		addKeyListener(this);
 		
