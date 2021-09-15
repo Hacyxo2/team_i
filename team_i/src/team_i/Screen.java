@@ -17,6 +17,7 @@ public class Screen extends Canvas implements KeyListener {
 	
 	public Screen() {
 		car[0] = new Car(0, 0, "image/car.png");
+		car[1] = new Car(50, 100, "image/car.png");
 			
 		addKeyListener(this);
 		
