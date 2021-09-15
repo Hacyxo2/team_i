@@ -11,8 +11,10 @@ public class MainFrame extends JFrame {
 	
 	public MainFrame()
 	{
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Play Car");
 		setSize(800, 600);
+		setPreferredSize(getPreferredSize());
 		setVisible(true);
 		
 		add(new Screen());

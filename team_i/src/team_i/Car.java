@@ -8,9 +8,9 @@ import javax.imageio.ImageIO;
 
 
 public class Car {
-		public int x = 0;
-		public int y = 0;
-		public BufferedImage image;
+		private int x = 0;
+		private int y = 0;
+		private BufferedImage image;
 		
 		public Car(int x, int y, String imagePath){
 			this.x = x;
@@ -21,5 +21,24 @@ public class Car {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}		
+		}	
+		public int getX() {
+			return x;
+		}
+		public int getY() {
+			return y;
+		}
+		public BufferedImage getImage() {
+			return image;
+		}
+		public void setX(int x) {
+			this.x = x;
+		
+		}
+		public void setY(int y) {
+			this.y = y;
+		}
+		public void setImage(BufferedImage image) {
+			this.image = image;
+		}
 }
