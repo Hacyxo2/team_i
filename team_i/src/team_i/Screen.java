@@ -41,7 +41,7 @@ public class Screen extends Canvas implements KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		int gap = 10;
+		int gap = 11;
 		switch(e.getKeyCode())
 		{
 		case KeyEvent.VK_UP:
