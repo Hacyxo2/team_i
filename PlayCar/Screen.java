@@ -1,0 +1,66 @@
+import java.awt.Canvas;
+import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+
+public class Screen extends Canvas implements KeyListener {
+
+	private int x1 = 0;
+	private int y = 0;
+	
+	private BufferedImage image;
+	private static final long serialVersionUID = 1L;
+	
+	public Screen() {
+		try {
+			image = ImageIO.read(new File("src/car.png"));
+			
+			addKeyListener(this);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	@Override
+	public void paint(Graphics g) {
+		// TODO Auto-generated method stub
+		super.paint(g);
+		g.drawImage(image, x1, y, this);
+	}
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		int gap = 10;
+		switch(e.getKeyCode())
+		{
+		case KeyEvent.VK_UP:
+			y -= gap;
+			break;
+		case KeyEvent.VK_DOWN:
+			y += gap;
+			break;
+		case KeyEvent.VK_LEFT:
+			x1 -= gap;
+			break;
+		case KeyEvent.VK_RIGHT:
+			x1 += gap;
+			break;
+		}
+		System.out.println(x1+", "+y);
+		repaint();
+	}
+
+}
