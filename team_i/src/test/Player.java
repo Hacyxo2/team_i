@@ -1,5 +1,6 @@
 package test;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
@@ -17,13 +18,13 @@ public class Player implements KeyListener {
 	boolean KeyDown = false;
 	boolean KeyLeft = false;
 	boolean KeyRight = false;
-	boolean isPress = false;
 	private int gap = 5;
+	private int size = 40;
 	public Player(View view) {
 		this.view = view;
 		try {
 			image = ImageIO.read(new File("image/person.png"));
-			image = image.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+			image = image.getScaledInstance(size, size, Image.SCALE_SMOOTH);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -53,6 +54,10 @@ public class Player implements KeyListener {
 	}
 	public void setImage(BufferedImage image) {
 		this.image = image;
+	}
+	public Point point() {
+		Point p = new Point(getCenterH(), getCenterW());
+		return p;
 	}
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -100,8 +105,19 @@ public class Player implements KeyListener {
 	public void KeyProcess() {
 		
 		int pos[] = new int[2];
-		if(x < 0) x = 0;
-		if(y < 0) y = 0;
+		// 왼쪽 벽을 벗어나지 않게함
+		if (x < 0)
+			x = 0;
+		// 오른쪽 벽을 벗어나지 않게함
+		if (x > Const.gamePan_W - (size * 2))
+			x = Const.gamePan_W - (size * 2);
+		// 위쪽 벽을 벗어나지 않게함
+		if (y < 0)
+			y = 0;
+		// 아래 벽을 벗어나지 않게함
+		if (y > Const.gamePan_H - ((size * 2) + size / 2))
+			y = Const.gamePan_H - (size * 3);
+
 		if(KeyUp == true) {
 			pos = collisionCheck(getX(), getY(), getX(), getY() - gap);
 			setY(getY() - gap);
@@ -166,7 +182,6 @@ public class Player implements KeyListener {
 			pos[0] = next_x;
 			pos[1] = next_y;
 		}
-		System.out.println(x_predict+", "+y_predict);
 		return pos;
 	}
 }

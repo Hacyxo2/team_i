@@ -16,20 +16,19 @@ import java.util.Random;
 
 
 
-public class View extends Canvas implements MouseListener, MouseMotionListener, Runnable {
+public class View extends Canvas implements Runnable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	Player player[] = new Player[1];
+	static Player player[] = new Player[1];
+	static Bullet bullet = new Bullet(0,0,0,0);
 	private Block block;
-	Point mouse;
-	Point pos;
+
 	double dAngle;
-	ArrayList<Bullet>bullets =new ArrayList<Bullet>();
-	int bulletSpeed = 5;
-	long prevtime = 0;
+	static int bulletSpeed = 5;
+	static long prevtime = 0;
 	
 	private Graphics bufferGraphics; //버퍼
 	private Image offscreen; // 버퍼
@@ -40,8 +39,6 @@ public class View extends Canvas implements MouseListener, MouseMotionListener, 
 	public View() {
 		player[0] = new Player(this);
 		block = new Block();
-		pos = new Point(player[0].getCenterH(), player[0].getCenterW());
-		mouse = new Point(player[0].getX(), player[0].getY());
 		board = new int[Const.gamePan_W][Const.gamePan_H];
 		Random rand = new Random();
 		rand.setSeed(System.currentTimeMillis());
@@ -52,10 +49,9 @@ public class View extends Canvas implements MouseListener, MouseMotionListener, 
 		}
 		th = new Thread(this);
 		th.start();
-		addMouseMotionListener(this);
+		addMouseMotionListener(bullet);
 		addKeyListener(player[0]);
-		addMouseListener(this);
-		
+		addMouseListener(bullet);
 	}
 	public int[][] getBoard(){
 		return board;
@@ -66,9 +62,12 @@ public class View extends Canvas implements MouseListener, MouseMotionListener, 
 			
 			try {
 				while(true) {
-					
+					if(bullet.isPress) {
+						bulletProcess();
+					}
+					moveBullet();
+					dAngle = getAngle(player[0].point(), Bullet.mouse);
 					player[0].KeyProcess();
-					bulletProcess();
 					repaint();
 					Thread.sleep(10);
 				}
@@ -92,7 +91,6 @@ public class View extends Canvas implements MouseListener, MouseMotionListener, 
 	@Override
 	public void update(Graphics g) {
 		// TODO Auto-generated method stub
-		
 		render(bufferGraphics);
 		g.drawImage(offscreen, 0, 0, this);
 	}
@@ -106,70 +104,37 @@ public class View extends Canvas implements MouseListener, MouseMotionListener, 
 		g2.rotate(Math.toRadians(dAngle), player[0].getCenterH(), player[0].getCenterW());
 		g2.drawImage(player[0].getImage(), player[0].getX(), player[0].getY(), this);
 		g2.setTransform(old);
-		for (int i = 0; i < bullets.size();i++)// 총알 그리기
+		for (Bullet b : bullet.bullets)// 총알 그리기
 		{
-			bullets.get(i).draw(g2);
+			g.drawOval((int)b.x, (int)b.y, 5, 5);
 		}
 		drawBlock(g);
 	}
 	
-
-	@Override
-	public void mouseDragged(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
-		mouse = e.getPoint();	
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		Point p = new Point(0,0);
-		p.x += bulletSpeed * Math.cos(dAngle);
-		p.y += bulletSpeed * Math.sin(dAngle);//각도에 따른 총알 이동값 계산
-		Bullet b = new Bullet(new Point(player[0].getCenterH(), player[0].getCenterW()), p);//총알 생성
-		System.out.println("위치"+p);
-		bullets.add(b);//배열에 저장
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	public void bulletProcess() {
-		dAngle = getAngle(pos, mouse);
-		for(int i = 0; i < bullets.size(); i++) {
-			bullets.get(i).move();
-			if(bullets.get(i).getPos().x < 0 || bullets.get(i).getPos().x > 1000) {
-				bullets.remove(i);
+	public void moveBullet() {
+		for (int i = 0; i < bullet.bullets.size() ; i++) {
+			if (bullet.bullets.get(i).move() == false)// 화면을 벗어나면 삭제 하기
+			{
+				bullet.bullets.remove(i);
 				break;
 			}
 		}
-		
+	}
+	
+	static public void bulletProcess() {
+		if((System.currentTimeMillis() - prevtime > 300)) {
+			double x1 = View.player[0].point().x;
+			double y1 = View.player[0].point().y;
+			double x2 = Bullet.mouse.x;
+			double y2 = Bullet.mouse.y;
+			double d = Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
+			System.out.println(d);
+			double vx = (x2 - x1) / d * bulletSpeed;
+			double vy = (y2 - y1) / d * bulletSpeed;
+			Bullet b = new  Bullet(x1, y1, vx, vy);
+			bullet.bullets.add(b);
+			prevtime = System.currentTimeMillis();
+		}
 	}
 	
 	public double getAngle(Point start, Point end) {
@@ -182,6 +147,7 @@ public class View extends Canvas implements MouseListener, MouseMotionListener, 
 		else
 			return Math.atan2(dy, dx) * (180.0 / Math.PI);
 	}
+	
 	private final static int BLOCK = 1;
 	private void drawBlock(Graphics g) {
 		for(int i=0; i < Const.gamePan_W; i++)
