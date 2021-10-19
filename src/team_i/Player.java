@@ -23,7 +23,7 @@ public class Player implements KeyListener {
 	public Player(View view) {
 		this.view = view;
 		try {
-			image = ImageIO.read(new File("image/person.png"));
+			image = ImageIO.read(new File("image/player.png"));
 			image = image.getScaledInstance(size, size, Image.SCALE_SMOOTH);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

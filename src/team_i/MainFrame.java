@@ -35,8 +35,9 @@ public class MainFrame extends JFrame{
 		start.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	start.setVisible(false);
             	add(view);
-                start.setVisible(false); // 창 안보이게 하기 
+                 // 창 안보이게 하기 
             }
         });
 	}

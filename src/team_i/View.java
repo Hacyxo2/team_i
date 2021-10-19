@@ -1,16 +1,13 @@
 package team_i;
 
 import java.awt.Canvas;
-//import java.awt.Color;
-//import java.awt.Dimension;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.geom.AffineTransform;
 import java.util.Random;
-
-
 
 public class View extends Canvas implements Runnable {
 	/**
@@ -20,11 +17,18 @@ public class View extends Canvas implements Runnable {
 
 	static Player player[] = new Player[1];
 	static Bullet bullet = new Bullet(0,0,0,0);
-	private Block block;
+
 
 	double dAngle;
 	static int bulletSpeed = 5;
 	static long prevtime = 0;
+	
+	//배경, 아이템
+	BackMove bm = new BackMove();
+	//내부 클래스 접근 방식
+	Item.test1 test1 = new Item(null,0,0,0).new test1();
+	Item item = new Item(null,0,0,0);
+	
 	
 	private Graphics bufferGraphics; //버퍼
 	private Image offscreen; // 버퍼
@@ -34,19 +38,18 @@ public class View extends Canvas implements Runnable {
 	
 	public View() {
 		player[0] = new Player(this);
-		block = new Block();
 		board = new int[Const.gamePan_W][Const.gamePan_H];
 		Random rand = new Random();
 		rand.setSeed(System.currentTimeMillis());
-		for(int i = 0; i < Const.gamePan_W; i++) {
-			for(int j = 0; j < Const.gamePan_H; j++) {
-				board[i][j] = rand.nextInt(2);
-			}
-		}
+		
+		item.imgList.add(new Item(test1.item1, 0, rand.nextInt(1000), rand.nextInt(800)));
+		item.imgList.add(new Item(test1.item1, 0, rand.nextInt(1000), rand.nextInt(800)));
+		item.imgList.add(new Item(test1.item1, 0, rand.nextInt(1000), rand.nextInt(800)));
+		
 		th = new Thread(this);
 		th.start();
-		addMouseMotionListener(bullet);
 		addKeyListener(player[0]);
+		addMouseMotionListener(bullet);
 		addMouseListener(bullet);
 	}
 	public int[][] getBoard(){
@@ -58,10 +61,23 @@ public class View extends Canvas implements Runnable {
 			
 			try {
 				while(true) {
+					//배경 2개 왼쪽으로 사라짐
+					bm.back1X--;
+					bm.back2X--;
 					if(bullet.isPress) {
 						bulletProcess();
 					}
 					moveBullet();
+					moveItem();
+					for (int i = 0;i < item.imgList.size(); i++) {
+						item.imgList.get(i).setX(item.imgList.get(i).getX()-5);
+					}
+					if(bm.back1X < -(bm.backImg.getWidth(null)-2)) {
+						bm.back1X = bm.backImg.getWidth(null);
+					}
+					if(bm.back2X < -(bm.backImg.getWidth(null)-2)) {
+						bm.back2X = bm.backImg.getWidth(null);
+					}
 					dAngle = getAngle(player[0].point(), Bullet.mouse);
 					player[0].KeyProcess();
 					repaint();
@@ -93,6 +109,7 @@ public class View extends Canvas implements Runnable {
 	
 	public void render(Graphics g) {
 		g.clearRect(0, 0, Const.gamePan_W, Const.gamePan_H);
+		background(g);
 		Graphics2D g2 = (Graphics2D) g;
 		
 		AffineTransform old = g2.getTransform();
@@ -102,9 +119,18 @@ public class View extends Canvas implements Runnable {
 		g2.setTransform(old);
 		for (Bullet b : bullet.bullets)// 총알 그리기
 		{
-			g.drawOval((int)b.x, (int)b.y, 5, 5);
+			g.setColor(Color.cyan);
+			g.drawRect((int)b.x, (int)b.y, 10, 5);
+			g.fillRect((int)b.x, (int)b.y, 10, 5);
 		}
-		drawBlock(g);
+	}
+	public void background(Graphics g) {
+		g.drawImage(bm.backImg, bm.back1X, 0, this);
+		g.drawImage(bm.backImg2, bm.back2X, 0, this);
+		for (int i = 0; i < item.imgList.size(); i++) {
+			g.drawImage(item.imgList.get(i).getImage(), item.imgList.get(i).getX(), item.imgList.get(i).getY(), this);
+			System.out.println(item.imgList.get(i).getX());
+		}
 	}
 	
 	public void moveBullet() {
@@ -116,7 +142,15 @@ public class View extends Canvas implements Runnable {
 			}
 		}
 	}
-	
+	public void moveItem() {
+		for (int i =0; i< item.imgList.size(); i++) {
+			if (item.imgList.get(i).move() == false)// 화면을 벗어나면 삭제 하기
+			{
+				item.imgList.remove(i);
+				break;
+			}
+		}
+	}
 	static public void bulletProcess() {
 		if((System.currentTimeMillis() - prevtime > 300)) {
 			double x1 = View.player[0].point().x;
@@ -142,23 +176,6 @@ public class View extends Canvas implements Runnable {
 		}
 		else
 			return Math.atan2(dy, dx) * (180.0 / Math.PI);
-	}
-	
-	private final static int BLOCK = 1;
-	private void drawBlock(Graphics g) {
-		for(int i=0; i < Const.gamePan_W; i++)
-		{
-			for(int j=0; j < Const.gamePan_H; j++)
-			{
-				if( board[i][j] == BLOCK)
-				{
-					//index to postion
-					block.setPosition(i*40, j*40);
-					block.draw(g, this);
-				}
-			}
-			board[0][0] = 0;
-		}
 	}
 }
 
