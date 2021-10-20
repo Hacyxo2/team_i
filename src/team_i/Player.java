@@ -1,8 +1,11 @@
 package team_i;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -18,8 +21,9 @@ public class Player implements KeyListener {
 	boolean KeyDown = false;
 	boolean KeyLeft = false;
 	boolean KeyRight = false;
-	private int gap = 5;
+	private int gap = 3;
 	private int size = 40;
+	
 	public Player(View view) {
 		this.view = view;
 		try {
@@ -59,6 +63,14 @@ public class Player implements KeyListener {
 		Point p = new Point(getCenterH(), getCenterW());
 		return p;
 	}
+
+	public void playerDraw(Graphics g) {
+		Graphics2D g2 = (Graphics2D) g;
+		AffineTransform old = g2.getTransform();
+		g2.rotate(Math.toRadians(view.dAngle), getCenterH(), getCenterW());
+		g2.drawImage(getImage(), getX(), getY(), view);
+		g2.setTransform(old);
+	}
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
@@ -87,6 +99,9 @@ public class Player implements KeyListener {
 		// TODO Auto-generated method stub
 		
 		switch(e.getKeyCode()) {
+		case 32:
+			setX(5);
+			break;
 		case 87:
 			KeyUp = false;
 			break;
@@ -102,18 +117,19 @@ public class Player implements KeyListener {
 		}
 		System.out.println(getX()+" "+getY());
 	}
+	
 	public void KeyProcess() {
 		
 		int pos[] = new int[2];
 		// 왼쪽 벽을 벗어나지 않게함
 		if (x < 0)
-			x = 0;
+			x = 5;
 		// 오른쪽 벽을 벗어나지 않게함
 		if (x > Const.gamePan_W - (size * 2))
 			x = Const.gamePan_W - (size * 2);
 		// 위쪽 벽을 벗어나지 않게함
 		if (y < 0)
-			y = 0;
+			y = 5;
 		// 아래 벽을 벗어나지 않게함
 		if (y > Const.gamePan_H - ((size * 2) + size / 2))
 			y = Const.gamePan_H - (size * 3);
