@@ -21,7 +21,7 @@ public class MainFrame extends JFrame{
 		JButton start = new JButton("ㅎㅇ");
 		start.setBounds(0,0,10,10);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setTitle("tlqkf");
+		setTitle("네모네모 슈팅게임");
 		setSize(Const.gamePan_W, Const.gamePan_H);
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 		add(start);

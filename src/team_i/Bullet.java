@@ -1,5 +1,6 @@
 package team_i;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
@@ -34,6 +35,7 @@ public class Bullet implements MouseListener, MouseMotionListener {
 		return true;
 	}
 	public static void mouseDraw(Graphics g) {
+		g.setColor(Color.magenta);
 		g.drawLine(mouse.x - 5, mouse.y, mouse.x + 5, mouse.y);
 		g.drawLine(mouse.x, mouse.y - 5, mouse.x, mouse.y + 5);
 	}

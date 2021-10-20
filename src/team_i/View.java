@@ -70,7 +70,7 @@ public class View extends Canvas implements Runnable {
 					moveBullet();
 					moveItem();
 					for (int i = 0;i < item.imgList.size(); i++) {
-						item.imgList.get(i).setX(item.imgList.get(i).getX()-5);
+						item.imgList.get(i).setX(item.imgList.get(i).getX());
 					}
 					if(bm.back1X < -(bm.backImg.getWidth(null)-2)) {
 						bm.back1X = bm.backImg.getWidth(null);
@@ -152,7 +152,7 @@ public class View extends Canvas implements Runnable {
 		}
 	}
 	static public void bulletProcess() {
-		if((System.currentTimeMillis() - prevtime > 300)) {
+		if((System.currentTimeMillis() - prevtime > 5)) {
 			double x1 = View.player[0].point().x;
 			double y1 = View.player[0].point().y;
 			double x2 = Bullet.mouse.x;
