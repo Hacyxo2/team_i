@@ -13,7 +13,7 @@ public class Bullet implements MouseListener, MouseMotionListener {
 	private double y;
 	private double vx;
 	private double vy;
-	private double bulletSpeed = 1;
+	private double bulletSpeed = 5;
 
 	ArrayList<Bullet>bullets =new ArrayList<Bullet>();
 	Point mouse = new Point(0, 0);
@@ -43,7 +43,7 @@ public class Bullet implements MouseListener, MouseMotionListener {
 	}
 	
 	public void bulletProcess() {
-		if ((System.currentTimeMillis() - prevtime > 5)) {
+		if ((System.currentTimeMillis() - prevtime > 300)) {
 			double x1 = View.player[0].point().x;
 			double y1 = View.player[0].point().y;
 			double x2 = mouse.x;

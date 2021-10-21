@@ -3,7 +3,7 @@ package team_i;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.util.ArrayList;
-
+import java.util.Random;
 import javax.swing.ImageIcon;
 
 public class Item {
@@ -13,6 +13,7 @@ public class Item {
 	private int y;
 	ArrayList<Item> imgList = new ArrayList<>();
 	View view;
+	private long prevtime = 0;
 	public Item(Image image, int type, int x, int y) {
 		this.image = image;
 		this.type = type;
@@ -24,9 +25,17 @@ public class Item {
 		ImageIcon itemIc1 = new ImageIcon("image/block.png");
 		Image  item1 = itemIc1.getImage();
 	}
-//	public void itemSetting(){
-		
-//	}
+
+	public void itemSetting() {
+		Random rand = new Random();
+		rand.setSeed(System.currentTimeMillis());
+		test1 test1 = new test1();
+		//특정 시간 마다 생성
+		if ((System.currentTimeMillis() - prevtime > 5000)) {
+			imgList.add(new Item(test1.item1, 0, 1000, rand.nextInt(800)));
+			prevtime = System.currentTimeMillis();
+		}
+	}
 //	public Image setImage(int type) {
 //		
 //	}
@@ -54,15 +63,12 @@ public class Item {
 	public void setType(int type) {
 		this.type = type;
 	}
-	
 	public void itemDraw(Graphics g) {
 		for (int i = 0; i < imgList.size(); i++) {
 			g.drawImage(imgList.get(i).getImage(), imgList.get(i).getX(), imgList.get(i).getY(), view);
 			System.out.println(imgList.get(i).getX());
 		}
 	}
-	
-	
 	public void moveItem() {
 		for (int i =0; i< imgList.size(); i++) {
 			imgList.get(i).setX(imgList.get(i).getX()-1);
