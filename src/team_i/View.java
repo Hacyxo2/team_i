@@ -12,13 +12,13 @@ public class View extends Canvas implements Runnable {
 	private static final long serialVersionUID = 1L;
 	// 플레이어(전역), 총알, 배경 움직임, 아이템
 	static Player player[] = new Player[1];
-	Bullet bullet = new Bullet(0, 0, 0, 0);
+	Bullet bullet = new Bullet(0, 0, 0, 0, 0);
 	BackMove bm = new BackMove();
 	Item.test1 test1 = new Item(null, 0, 0, 0).new test1();
 	Item item = new Item(null, 0, 0, 0);
 	
 	double dAngle;//각도
-	private int board[][];//게임판
+	static int board[][];//게임판
 	
 	private Graphics bufferGraphics; //버퍼
 	private Image offscreen; // 버퍼
@@ -49,7 +49,7 @@ public class View extends Canvas implements Runnable {
 					bullet.moveBullet();// 총알 움직임
 					item.moveItem();// 아이템 움직임
 					bm.backgroundMove();//배경 움직임
-					dAngle = getAngle(player[0].point(), bullet.mouse);
+					dAngle = getAngle(player[0].point(), bullet.getMousePointer());
 					//System.out.println(bullet.mouse); //마우스 위치 확인
 					player[0].KeyProcess();
 					repaint();

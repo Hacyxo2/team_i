@@ -135,20 +135,20 @@ public class Player implements KeyListener {
 			y = Const.gamePan_H - (size * 3);
 
 		if(KeyUp == true) {
-			pos = collisionCheck(getX(), getY(), getX(), getY() - gap);
-			setY(getY() - gap);
+			pos = collisionCheck(x, y,x, y - gap);
+			setY(y - gap);
 		}
 		if(KeyDown == true) {
-			pos = collisionCheck(getX(), getY(), getX(), getY() + gap);
-			setY(getY() + gap);
+			pos = collisionCheck(x, y, x, y + gap);
+			setY(y + gap);
 		}
 		if(KeyLeft == true) {
-			pos = collisionCheck(getX(), getY(), getX() - gap, getY());
-			setX(getX() - gap);	
+			pos = collisionCheck(x, y, x - gap, y);
+			setX(x - gap);	
 		}
 		if(KeyRight == true) {
-			pos = collisionCheck(getX(), getY(), getX() + gap, getY());
-			setX(getX() + gap);
+			pos = collisionCheck(x, y, x + gap, y);
+			setX(x + gap);
 		}
 		pos[0] = x;
 		pos[1] = y;
