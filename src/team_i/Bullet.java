@@ -15,6 +15,8 @@ public class Bullet implements MouseListener, MouseMotionListener {
 	private double y;
 	private double vx;
 	private double vy;
+	private int w = 10;
+	private int h = 5;
 	private double bulletSpeed = 5;
 	private double dAngle;
 	private ArrayList<Bullet>bullets =new ArrayList<Bullet>();
@@ -36,8 +38,8 @@ public class Bullet implements MouseListener, MouseMotionListener {
 		{
 			g2.rotate(Math.toRadians(b.dAngle), b.getX(), b.getY());
 			g2.setColor(Color.cyan);
-			g2.drawRect((int) b.getX(), (int) b.getY(), 10, 5);
-			g2.fillRect((int) b.getX(), (int) b.getY(), 10, 5);
+			g2.drawRect((int) b.getX(), (int) b.getY(), b.getW(), b.getH());
+			g2.fillRect((int) b.getX(), (int) b.getY(), b.getW(), b.getH());
 			g2.setTransform(old);
 		}
 	}
@@ -71,7 +73,6 @@ public class Bullet implements MouseListener, MouseMotionListener {
 			double x2 = getMousePointer().x;
 			double y2 = getMousePointer().y;
 			double d = Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
-			System.out.println(d);
 			double vx = (x2 - x1) / d * bulletSpeed;
 			double vy = (y2 - y1) / d * bulletSpeed;
 			dAngle = getAngle(View.player[0].point(), getMousePointer());
@@ -94,6 +95,12 @@ public class Bullet implements MouseListener, MouseMotionListener {
 	}
 	public Point getMousePointer() {
 		return mouse;
+	}
+	public int getH() {
+		return h;
+	}
+	public int getW() {
+		return w;
 	}
 	public double getAngle(Point start, Point end) {
 		double dx = end.x - start.x;

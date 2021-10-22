@@ -115,7 +115,7 @@ public class Player implements KeyListener {
 			KeyRight = false;
 			break;
 		}
-		System.out.println(getX()+" "+getY());
+		//System.out.println(getX()+" "+getY());
 	}
 	
 	public void KeyProcess() {

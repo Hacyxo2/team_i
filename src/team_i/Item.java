@@ -31,15 +31,17 @@ public class Item {
 		rand.setSeed(System.currentTimeMillis());
 		test1 test1 = new test1();
 		//특정 시간 마다 생성
-		if ((System.currentTimeMillis() - prevtime > 5000)) {
-			imgList.add(new Item(test1.item1, 0, 1000, rand.nextInt(800)));
+		if ((System.currentTimeMillis() - prevtime > 500)) {
+			for (int i = 0;i < 5;i++) {
+				imgList.add(new Item(test1.item1, 0, 1000, rand.nextInt(800)));
+				
+			}
 			prevtime = System.currentTimeMillis();
 		}
 	}
 	public void itemDraw(Graphics g) {
 		for (int i = 0; i < imgList.size(); i++) {
 			g.drawImage(imgList.get(i).getImage(), imgList.get(i).getX(), imgList.get(i).getY(), view);
-			System.out.println(imgList.get(i).getX());
 		}
 	}
 	public void moveItem() {

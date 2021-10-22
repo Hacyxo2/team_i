@@ -16,7 +16,7 @@ public class View extends Canvas implements Runnable {
 	BackMove bm = new BackMove();
 	Item.test1 test1 = new Item(null, 0, 0, 0).new test1();
 	Item item = new Item(null, 0, 0, 0);
-	
+	Collision collision = new Collision();
 	double dAngle;//각도
 	static int board[][];//게임판
 	
@@ -42,7 +42,7 @@ public class View extends Canvas implements Runnable {
 
 			try {
 				while (true) {
-					if (bullet.isPress) {
+					if (bullet.isPress) {//isPress가 True일때 총알 발사
 						bullet.bulletProcess();
 					}
 					item.itemSetting();	//아이템 랜덤 생성 및 움직임
@@ -51,6 +51,7 @@ public class View extends Canvas implements Runnable {
 					bm.backgroundMove();//배경 움직임
 					dAngle = getAngle(player[0].point(), bullet.getMousePointer());
 					//System.out.println(bullet.mouse); //마우스 위치 확인
+					collision.collision(this, item, bullet);
 					player[0].KeyProcess();
 					repaint();
 					Thread.sleep(10);
