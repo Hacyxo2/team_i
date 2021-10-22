@@ -86,6 +86,8 @@ public class View extends Canvas implements Runnable {
 		item.itemDraw(g);
 		//탄환
 		bullet.BulletDraw(g);
+		//마우스 포인터
+		bullet.mouseDraw(g);
 		//플레이어
 		player[0].playerDraw(g);
 	}

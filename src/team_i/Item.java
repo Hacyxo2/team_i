@@ -36,6 +36,28 @@ public class Item {
 			prevtime = System.currentTimeMillis();
 		}
 	}
+	public void itemDraw(Graphics g) {
+		for (int i = 0; i < imgList.size(); i++) {
+			g.drawImage(imgList.get(i).getImage(), imgList.get(i).getX(), imgList.get(i).getY(), view);
+			System.out.println(imgList.get(i).getX());
+		}
+	}
+	public void moveItem() {
+		for (int i =0; i< imgList.size(); i++) {
+			imgList.get(i).setX(imgList.get(i).getX()-1);
+			if (imgList.get(i).move() == false)// 화면을 벗어나면 삭제 하기
+			{
+				imgList.remove(i);
+				break;
+			}
+		}
+	}
+	public boolean move() {
+		if(x < 0 || x > Const.gamePan_W || y < 0 || y > Const.gamePan_H) {
+			return false;				
+		}
+		return true;
+	}
 //	public Image setImage(int type) {
 //		
 //	}
@@ -62,27 +84,5 @@ public class Item {
 	}
 	public void setType(int type) {
 		this.type = type;
-	}
-	public void itemDraw(Graphics g) {
-		for (int i = 0; i < imgList.size(); i++) {
-			g.drawImage(imgList.get(i).getImage(), imgList.get(i).getX(), imgList.get(i).getY(), view);
-			System.out.println(imgList.get(i).getX());
-		}
-	}
-	public void moveItem() {
-		for (int i =0; i< imgList.size(); i++) {
-			imgList.get(i).setX(imgList.get(i).getX()-1);
-			if (imgList.get(i).move() == false)// 화면을 벗어나면 삭제 하기
-			{
-				imgList.remove(i);
-				break;
-			}
-		}
-	}
-	public boolean move() {
-		if(x < 0 || x > Const.gamePan_W || y < 0 || y > Const.gamePan_H) {
-			return false;				
-		}
-		return true;
 	}
 }

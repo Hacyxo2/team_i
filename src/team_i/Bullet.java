@@ -14,7 +14,7 @@ public class Bullet implements MouseListener, MouseMotionListener {
 	private double vx;
 	private double vy;
 	private double bulletSpeed = 5;
-
+	private double dAngle;
 	ArrayList<Bullet>bullets =new ArrayList<Bullet>();
 	Point mouse = new Point(0, 0);
 	boolean isPress = false;
