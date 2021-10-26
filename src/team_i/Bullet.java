@@ -102,6 +102,9 @@ public class Bullet implements MouseListener, MouseMotionListener {
 	public int getW() {
 		return w;
 	}
+	public ArrayList<Bullet> getBullets() {
+		return bullets;
+	}
 	public double getAngle(Point start, Point end) {
 		double dx = end.x - start.x;
 		double dy = end.y - start.y;
