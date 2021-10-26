@@ -31,7 +31,7 @@ public class Item {
 		rand.setSeed(System.currentTimeMillis());
 		test1 test1 = new test1();
 		//특정 시간 마다 생성
-		if ((System.currentTimeMillis() - prevtime > 500)) {
+		if ((System.currentTimeMillis() - prevtime > 4000)) {
 			for (int i = 0;i < 5;i++) {
 				imgList.add(new Item(test1.item1, 0, 1000, rand.nextInt(800)));
 				
@@ -46,7 +46,7 @@ public class Item {
 	}
 	public void moveItem() {
 		for (int i =0; i< imgList.size(); i++) {
-			imgList.get(i).setX(imgList.get(i).getX()-1);
+			imgList.get(i).setX(imgList.get(i).getX()-3);
 			if (imgList.get(i).move() == false)// 화면을 벗어나면 삭제 하기
 			{
 				imgList.remove(i);
@@ -55,7 +55,7 @@ public class Item {
 		}
 	}
 	public boolean move() {
-		if(x < 0 || x > Const.gamePan_W || y < 0 || y > Const.gamePan_H) {
+		if(x < -50 || x > Const.gamePan_W || y < 0 || y > Const.gamePan_H) {
 			return false;				
 		}
 		return true;

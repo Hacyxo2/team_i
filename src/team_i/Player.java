@@ -166,11 +166,11 @@ public class Player implements KeyListener {
 		
 		if(x - next_x > 0)//왼쪽으로 이동
 		{
-			x_predict = index_x - 1;
+			x_predict = index_x - 5;
 		}
 		else if(x - next_x < 0)//오른쪽으로 이동
 		{
-			x_predict = index_x + 1;
+			x_predict = index_x + 5;
 		}
 		else //안움직임
 		{
@@ -178,11 +178,11 @@ public class Player implements KeyListener {
 		}
 		if(y - next_y > 0)//위로 이동
 		{
-			y_predict = index_y - 1;
+			y_predict = index_y - 5;
 		}
 		else if(y - next_y < 0)//아래로 이동
 		{
-			y_predict = index_y + 1;
+			y_predict = index_y + 5;
 		}
 		else//안움직임
 		{

@@ -10,12 +10,13 @@ public class View extends Canvas implements Runnable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	// 플레이어(전역), 총알, 배경 움직임, 아이템
+	// 플레이어(전역), 총알, 배경 움직임, 아이템, 적, 충돌
 	static Player player[] = new Player[1];
 	Bullet bullet = new Bullet(0, 0, 0, 0, 0);
 	BackMove bm = new BackMove();
 	Item.test1 test1 = new Item(null, 0, 0, 0).new test1();
 	Item item = new Item(null, 0, 0, 0);
+	Enemy enemy = new Enemy(null, 0, 0, 0, 0);
 	Collision collision = new Collision();
 	double dAngle;//각도
 	static int board[][];//게임판
@@ -45,13 +46,15 @@ public class View extends Canvas implements Runnable {
 					if (bullet.isPress) {//isPress가 True일때 총알 발사
 						bullet.bulletProcess();
 					}
-					item.itemSetting();	//아이템 랜덤 생성 및 움직임
+					item.itemSetting();	//아이템 랜덤 생성
+					enemy.enemySetting();//적 랜덤 생성
 					bullet.moveBullet();// 총알 움직임
 					item.moveItem();// 아이템 움직임
+					enemy.moveEnemy();// 적 움직임
 					bm.backgroundMove();//배경 움직임
 					dAngle = getAngle(player[0].point(), bullet.getMousePointer());
 					//System.out.println(bullet.mouse); //마우스 위치 확인
-					collision.collision(this, item, bullet);
+					collision.collision(this, item, bullet, enemy);
 					player[0].KeyProcess();
 					repaint();
 					Thread.sleep(10);
@@ -91,6 +94,8 @@ public class View extends Canvas implements Runnable {
 		bullet.mouseDraw(g);
 		//플레이어
 		player[0].playerDraw(g);
+		//적
+		enemy.enemyDraw(g);
 	}
 	public double getAngle(Point start, Point end) {
 		double dx = end.x - start.x;
