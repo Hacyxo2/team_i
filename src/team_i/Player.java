@@ -193,11 +193,6 @@ public class Player implements KeyListener {
 		if(y_predict < 0)
 			y_predict = 0;
 		
-		if( view.getBoard()[x_predict][y_predict] == 0)
-		{
-			pos[0] = next_x;
-			pos[1] = next_y;
-		}
 		return pos;
 	}
 }

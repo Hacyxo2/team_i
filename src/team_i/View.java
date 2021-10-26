@@ -26,7 +26,7 @@ public class View extends Canvas implements Runnable {
 	
 	public View() {
 		player[0] = new Player(this);
-		board = new int[Const.gamePan_W][Const.gamePan_H];
+//		board = new int[Const.gamePan_W][Const.gamePan_H];
 		th = new Thread(this);
 		th.start();
 		addMouseMotionListener(bullet);
