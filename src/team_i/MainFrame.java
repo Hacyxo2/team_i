@@ -18,6 +18,7 @@ public class MainFrame extends JFrame{
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	private Audio backgroundMusic;
 	
 	
 	public MainFrame() {
@@ -31,6 +32,7 @@ public class MainFrame extends JFrame{
 		setLocation(f_xpos, f_ypos);
 		setResizable(false);
 		getContentPane().setLayout(new BorderLayout(0, 0));
+		
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.BLACK);
@@ -48,5 +50,8 @@ public class MainFrame extends JFrame{
 		panel.add(start);
 		setVisible(true);
 		validate();
+		backgroundMusic = new Audio("src/audio/sound1.wav", true);
+        backgroundMusic.start();
 	}
+	
 }
