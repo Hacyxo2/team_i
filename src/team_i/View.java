@@ -12,12 +12,13 @@ public class View extends Canvas implements Runnable {
 	private static final long serialVersionUID = 1L;
 	// 플레이어(전역), 총알, 배경 움직임, 아이템, 적, 충돌
 	static Player player[] = new Player[1];
-	Bullet bullet = new Bullet(0, 0, 0, 0, 0);
+	static Bullet bullet = new Bullet(0, 0, 0, 0, 0);
+	EBullet eBullet = new EBullet(0, 0, 0, 0, 0, 0);
 	BackMove bm = new BackMove();
-	Item.test1 test1 = new Item(null, 0, 0, 0).new test1();
 	Item item = new Item(null, 0, 0, 0);
-	Enemy enemy = new Enemy(null, 0, 0, 0, 0);
+	Enemy enemy = new Enemy(null, 0, 0, 0, 0, 0);
 	Collision collision = new Collision();
+	Timer timer = new Timer();
 	double dAngle;//각도
 	static int board[][];//게임판
 	
@@ -28,6 +29,8 @@ public class View extends Canvas implements Runnable {
 	public View() {
 		player[0] = new Player(this);
 //		board = new int[Const.gamePan_W][Const.gamePan_H];
+		item.itemSetting();	// 아이템 랜덤 생성
+		enemy.enemySetting();// 적 랜덤 생성
 		th = new Thread(this);
 		th.start();
 		addMouseMotionListener(bullet);
@@ -46,16 +49,16 @@ public class View extends Canvas implements Runnable {
 					if (bullet.isPress) {//isPress가 True일때 총알 발사
 						bullet.bulletProcess();
 					}
-					item.itemSetting();	//아이템 랜덤 생성
-					enemy.enemySetting();//적 랜덤 생성
+					eBullet.bulletProcess();
+					eBullet.moveBullet();
 					bullet.moveBullet();// 총알 움직임
 					item.moveItem();// 아이템 움직임
 					enemy.moveEnemy();// 적 움직임
 					bm.backgroundMove();//배경 움직임
 					dAngle = getAngle(player[0].point(), bullet.getMousePointer());
 					//System.out.println(bullet.mouse); //마우스 위치 확인
-					collision.collision(this, item, bullet, enemy);
-					player[0].KeyProcess();
+					collision.collision(item, bullet, enemy, bm);
+					player[0].KeyProcess();// 키 움직임
 					repaint();
 					Thread.sleep(10);
 				}
@@ -84,12 +87,16 @@ public class View extends Canvas implements Runnable {
 	//실질적으로 그릴 것
 	public void render(Graphics g) {
 		g.clearRect(0, 0, Const.gamePan_W, Const.gamePan_H);
+		
 		//배경
 		bm.background(g);
+		bm.fadeOutGraphics(g);
+		player[0].textDraw(g);
 		//아이템
 		item.itemDraw(g);
 		//탄환
-		bullet.BulletDraw(g);
+		bullet.bulletDraw(g);
+		eBullet.bulletDraw(g);
 		//마우스 포인터
 		bullet.mouseDraw(g);
 		//플레이어

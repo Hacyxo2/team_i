@@ -17,11 +17,12 @@ public class Bullet implements MouseListener, MouseMotionListener {
 	private double vy;
 	private int w = 10;
 	private int h = 5;
-	private double bulletSpeed = 5;
+	private double bulletSpeed = 6;
 	private double dAngle;
-	private ArrayList<Bullet>bullets =new ArrayList<Bullet>();
+	private ArrayList<Bullet>bullets =new ArrayList<Bullet>(100);
 	private Point mouse = new Point(0, 0);
 	boolean isPress = false;
+	Color color = Color.cyan;
 	long prevtime = 0;
 	
 	public Bullet(double x, double y, double vx, double vy, double dAngle) {
@@ -31,25 +32,26 @@ public class Bullet implements MouseListener, MouseMotionListener {
 		this.vx = vx;
 		this.vy = vy;
 	}
-	public void BulletDraw(Graphics g) {
+	public void bulletDraw(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
 		AffineTransform old = g2.getTransform();
 		for (Bullet b : bullets)// 총알 그리기
 		{
 			g2.rotate(Math.toRadians(b.dAngle), b.getX(), b.getY());
-			g2.setColor(Color.cyan);
+			g2.setColor(color);
 			g2.drawRect((int) b.getX(), (int) b.getY(), b.getW(), b.getH());
 			g2.fillRect((int) b.getX(), (int) b.getY(), b.getW(), b.getH());
 			g2.setTransform(old);
 		}
 	}
 	public void mouseDraw(Graphics g) {
-		g.setColor(Color.magenta);
+		g.setColor(color);
 		g.drawLine(mouse.x - 5, mouse.y, mouse.x + 5, mouse.y);
 		g.drawLine(mouse.x, mouse.y - 5, mouse.x, mouse.y + 5);
 	}
+
 	public void moveBullet() {
-		for (int i = 0; i < bullets.size() ; i++) {
+		for (int i = 0; i < bullets.size(); i++) {
 			if (bullets.get(i).move() == false)// 화면을 벗어나면 삭제 하기
 			{
 				bullets.remove(i);
@@ -57,17 +59,20 @@ public class Bullet implements MouseListener, MouseMotionListener {
 			}
 		}
 	}
+
 	public boolean move() {
 		x += vx;
 		y += vy;
 		if(x < 0 || x > Const.gamePan_W || y < 0 || y > Const.gamePan_H) {
+			x = 0;
+			y = 0;
 			return false;				
 		}
 		return true;
 	}
 		
 	public void bulletProcess() {
-		if ((System.currentTimeMillis() - prevtime > 300)) {
+		if(System.currentTimeMillis() - prevtime > 300) {
 			double x1 = View.player[0].point().x;
 			double y1 = View.player[0].point().y;
 			double x2 = getMousePointer().x;
@@ -114,6 +119,13 @@ public class Bullet implements MouseListener, MouseMotionListener {
 		}
 		else
 			return Math.atan2(dy, dx) * (180.0 / Math.PI);
+	}
+	public void setColor(int type) {
+		if(type == 1){
+			this.color = Color.green;
+		}
+		else
+			this.color = Color.MAGENTA;
 	}
 	@Override
 	public void mouseDragged(MouseEvent e) {

@@ -1,5 +1,7 @@
+
 package team_i;
 
+import java.awt.AlphaComposite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -9,19 +11,23 @@ import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.ImageIcon;
 
+
 public class Enemy {
 	private Image image;
 	private int type;
 	private int x;
 	private int y;
+	private int alpha;
 	private double dAngle;
-	ArrayList<Enemy> imgList = new ArrayList<>();
+	private AlphaComposite alpahComposite; 
+	static ArrayList<Enemy> imgList = new ArrayList<>(100);
 	View view;
 	private long prevtime = 0;
-	public Enemy(Image image, int type, int x, int y, double dAngle) {
+	public Enemy(Image image, int type, int x, int y, int alpha, double dAngle) {
 		this.dAngle = dAngle;
 		this.image = image;
 		this.type = type;
+		this.alpha = alpha;
 		this.x = x;
 		this.y = y;
 	}
@@ -36,35 +42,38 @@ public class Enemy {
 		rand.setSeed(System.currentTimeMillis());
 		test1 test1 = new test1();
 		//특정 시간 마다 생성
-		if ((System.currentTimeMillis() - prevtime > 4000)) {
-			for (int i = 0;i < 3;i++) {
-				imgList.add(new Enemy(test1.enemy1, 0, 1000, rand.nextInt(800), dAngle));
-
-			}
-			prevtime = System.currentTimeMillis();
-		}
+			imgList.add(new Enemy(test1.enemy1, 0, 1200 + rand.nextInt(200), rand.nextInt(800), 255, dAngle));
+			imgList.add(new Enemy(test1.enemy1, 0, 1200 + rand.nextInt(200), rand.nextInt(800), 255, dAngle));
+			imgList.add(new Enemy(test1.enemy1, 0, 1200 + rand.nextInt(200), rand.nextInt(800), 255, dAngle));
 	}
+	public void initEnemy(int index) {
+		Random rand = new Random();
+		rand.setSeed(System.currentTimeMillis());
+		imgList.get(index).setX(1200+rand.nextInt(200));
+		imgList.get(index).setY(rand.nextInt(800));
+		imgList.get(index).setType(rand.nextInt(2));
+	}
+	
 	public void enemyDraw(Graphics g) {
-		Graphics2D g2 = (Graphics2D) g;
-		AffineTransform old = g2.getTransform();
 		for (int i = 0; i < imgList.size(); i++) {
-			g2.drawImage(imgList.get(i).getImage(), imgList.get(i).getX(), imgList.get(i).getY(), view);
-			g2.setTransform(old);
+			alpahComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float)imgList.get(i).getAlpha()/255);
+			g.drawImage(imgList.get(i).getImage(), imgList.get(i).getX(), imgList.get(i).getY(), null);
+	
 		}
 	}
 	public void moveEnemy() {
-		for (int i =0; i< imgList.size(); i++) {
-			imgList.get(i).setX(imgList.get(i).getX()-1);
+		for (int i = 0; i< imgList.size(); i++) {
+			imgList.get(i).setX(imgList.get(i).getX()-3);
 			if (imgList.get(i).move() == false)// 화면을 벗어나면 삭제 하기
 			{
-				imgList.remove(i);
+				initEnemy(i);
 				break;
 			}
 		}
 	}
 	public boolean move() {
-		if(x < -50 || x > Const.gamePan_W || y < 0 || y > Const.gamePan_H) {
-			return false;				
+		if(x < -50 || y < 0 || y > Const.gamePan_H) {
+			return false;
 		}
 		return true;
 	}
@@ -94,8 +103,17 @@ public class Enemy {
 	public int getType() {
 		return type;
 	}
-	public Point setPoint(int x, int y) {
-		Point p = new Point(getW(x), getH(y));
+	public int getAlpha() {
+		return alpha;
+	}
+	public int getH() {
+		return y + image.getHeight(view)/2;
+	}
+	public int getW() {
+		return x + image.getWidth(view)/2;
+	}
+	public Point point() {
+		Point p = new Point(getW(), getH());
 
 		return p;
 	}
@@ -116,10 +134,8 @@ public class Enemy {
 	public void setType(int type) {
 		this.type = type;
 	}
-	public int getH(int x) {
-		return x + image.getHeight(view)/2;
+	public void setAlpha(int alpha) {
+		this.alpha = alpha;
 	}
-	public int getW(int y) {
-		return y + image.getWidth(view)/2;
-	}
+	
 }

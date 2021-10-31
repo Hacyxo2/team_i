@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 
@@ -17,10 +18,9 @@ public class MainFrame extends JFrame{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+	private Timer timer;
 	private Audio backgroundMusic;
-	
-	
+
 	public MainFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("네모네모 슈팅게임");
@@ -41,17 +41,20 @@ public class MainFrame extends JFrame{
 		JButton start = new JButton("start");
 		start.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				getContentPane().add(view);
+		
+				backgroundMusic = new Audio("audio/Dominator.wav", true);
+		        backgroundMusic.start();
+				timer = new Timer();
+				timer.start();
 				panel.setVisible(false);
 				start.setVisible(false);
+				getContentPane().add(view);
 			}
 		});
-		start.setBounds(461, 367, 57, 23);
+		start.setBounds(400, 327, 157, 23);
 		panel.add(start);
 		setVisible(true);
 		validate();
-		backgroundMusic = new Audio("src/audio/sound1.wav", true);
-        backgroundMusic.start();
+		
 	}
-	
 }
