@@ -116,7 +116,6 @@ public class Enemy {
 		return p;
 	}
 	public double enemydAngle(Point x) {
-		
 		dAngle = getAngle(x, View.player[0].point());
 		return dAngle;
 	}

@@ -5,15 +5,19 @@ public class Collision {
 	private Bullet bullet;
 	private Enemy enemy;
 	private BackMove bm;
+	private Audio hitSound;
+	private Audio hitSound2;
 	public void collision( Item item, Bullet bullet, Enemy enemy, BackMove bm) {
 		this.item = item;
 		this.bm = bm;
 		this.bullet = bullet;
 		this.enemy = enemy;
+		hitSound = new Audio("audio/hit.wav", false);// 총알과 구조물이 피격시
+		hitSound2 = new Audio("audio/playerhit.wav", false); // 플레어어와 구조들이 피격시
 		new Thread(new Runnable() {
-
+			
 			@Override
-			public void run() {
+			public void run() {	
 				// TODO Auto-generated method stub
 				try {
 					playerCollision();
@@ -25,7 +29,6 @@ public class Collision {
 					e.printStackTrace();
 				}
 			}
-
 		}).start();
 	}
 
@@ -41,6 +44,7 @@ public class Collision {
 				item.initItem(i);
 				bm.fadeOut();
 				View.player[0].setScore(50);
+				hitSound2.start();
 			}
 		}
 		for (int i = 0; i < Enemy.imgList.size(); i++) {
@@ -51,7 +55,7 @@ public class Collision {
 					Enemy.imgList.get(i).getImage().getWidth(null))) {
 				View.player[0].setHp(-50);
 				enemy.initEnemy(i);
-				
+				hitSound2.start();
 			}
 		}
 		
@@ -65,6 +69,7 @@ public class Collision {
 				View.player[0].setHp(-30);
 				bm.fadeOut();
 				EBullet.bullets.remove(j);
+				hitSound2.start();
 			}
 		}
 	}
@@ -82,6 +87,7 @@ public class Collision {
 					View.player[0].setScore(50);
 					item.itemEffect(item.imgList.get(i).getType());
 					bullet.getBullets().remove(j);
+					hitSound.start();
 				}
 			}
 		}
@@ -95,6 +101,7 @@ public class Collision {
 					View.player[0].setScore(50);
 					enemy.initEnemy(i);
 					bullet.getBullets().remove(j);
+					hitSound.start();
 				}
 			}
 		}

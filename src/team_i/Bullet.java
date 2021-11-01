@@ -19,7 +19,8 @@ public class Bullet implements MouseListener, MouseMotionListener {
 	private int h = 10;
 	private double bulletSpeed = 6;
 	private double dAngle;
-	private ArrayList<Bullet>bullets =new ArrayList<Bullet>(100);
+	private ArrayList<Bullet> bullets = new ArrayList<Bullet>(100);
+	private Audio hitSound = new Audio("audio/hit2.wav", false); //ÃÑ¾Ë ¹ß»çÀ½
 	private Point mouse = new Point(0, 0);
 	boolean isPress = false;
 	Color color = Color.cyan;
@@ -42,7 +43,7 @@ public class Bullet implements MouseListener, MouseMotionListener {
 			g2.drawRect((int) b.getX(), (int) b.getY(), b.getW(), b.getH());
 			g2.fillRect((int) b.getX(), (int) b.getY(), b.getW(), b.getH());
 			g2.setTransform(old);
-		}
+		}hitSound.start();
 	}
 	public void mouseDraw(Graphics g) {
 		g.setColor(color);
