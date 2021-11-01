@@ -114,4 +114,5 @@ public class View extends Canvas implements Runnable {
 		else
 			return Math.atan2(dy, dx) * (180.0 / Math.PI);
 	}
+	
 }
