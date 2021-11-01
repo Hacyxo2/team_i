@@ -20,7 +20,7 @@ public class EBullet {
 	private double y;
 	private double vx;
 	private double vy;
-	private int index;
+
 	private int w = 40;
 	private int h = 20;
 	private double bulletSpeed = 4;
@@ -31,8 +31,7 @@ public class EBullet {
 	Color color = Color.cyan;
 	long prevtime = 0;
 	
-	public EBullet (int index, double x, double y, double vx, double vy, double dAngle) {
-		this.index = index;
+	public EBullet (double x, double y, double vx, double vy, double dAngle) {
 		this.dAngle = dAngle;
 		this.x = x;
 		this.y = y;
@@ -52,8 +51,8 @@ public class EBullet {
 		for (EBullet b : bullets)// ÃÑ¾Ë ±×¸®±â
 		{
 			g2.rotate(Math.toRadians(b.dAngle), b.getCenterH(), b.getCenterW());
-			
-			g2.drawImage(image, (int) b.getX(), (int) b.getY(), b.getW(), b.getH(), null);
+			g2.drawRect((int) b.getX(), (int) b.getY(), b.getW(), b.getH());
+			g2.fillRect((int) b.getX(), (int) b.getY(), b.getW(), b.getH());
 			g2.setTransform(old);
 		}
 	}
@@ -91,7 +90,7 @@ public class EBullet {
 				double vx = (x2 - x1) / d * (bulletSpeed+1);
 				double vy = (y2 - y1) / d * (bulletSpeed+1);
 				dAngle = getAngle(Enemy.imgList.get(i).point(), View.player[0].point());
-				EBullet b = new EBullet(i,x1, y1, vx, vy, dAngle);
+				EBullet b = new EBullet(x1, y1, vx, vy, dAngle);
 				bullets.add(b);
 				
 				prevtime = System.currentTimeMillis();
@@ -136,11 +135,11 @@ public class EBullet {
 		else
 			return Math.atan2(dy, dx) * (180.0 / Math.PI);
 	}
-	public void setColor(int type) {
-		if(type == 1){
-			this.color = Color.green;
-		}
-		else
-			this.color = Color.MAGENTA;
-	}
+//	public void setColor(int type) {
+//		if(type == 1){
+//			this.color = Color.green;
+//		}
+//		else
+//			this.color = Color.MAGENTA;
+//	}
 }

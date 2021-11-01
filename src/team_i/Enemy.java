@@ -19,7 +19,6 @@ public class Enemy {
 	private int y;
 	private int alpha;
 	private double dAngle;
-	private AlphaComposite alpahComposite; 
 	static ArrayList<Enemy> imgList = new ArrayList<>(100);
 	View view;
 	private long prevtime = 0;
@@ -56,7 +55,6 @@ public class Enemy {
 	
 	public void enemyDraw(Graphics g) {
 		for (int i = 0; i < imgList.size(); i++) {
-			alpahComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float)imgList.get(i).getAlpha()/255);
 			g.drawImage(imgList.get(i).getImage(), imgList.get(i).getX(), imgList.get(i).getY(), null);
 	
 		}

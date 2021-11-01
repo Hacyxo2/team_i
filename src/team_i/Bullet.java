@@ -16,7 +16,7 @@ public class Bullet implements MouseListener, MouseMotionListener {
 	private double vx;
 	private double vy;
 	private int w = 10;
-	private int h = 5;
+	private int h = 10;
 	private double bulletSpeed = 6;
 	private double dAngle;
 	private ArrayList<Bullet>bullets =new ArrayList<Bullet>(100);

@@ -13,7 +13,7 @@ public class View extends Canvas implements Runnable {
 	// 플레이어(전역), 총알, 배경 움직임, 아이템, 적, 충돌
 	static Player player[] = new Player[1];
 	static Bullet bullet = new Bullet(0, 0, 0, 0, 0);
-	EBullet eBullet = new EBullet(0, 0, 0, 0, 0, 0);
+	EBullet eBullet = new EBullet(0, 0, 0, 0, 0);
 	BackMove bm = new BackMove();
 	Item item = new Item(null, 0, 0, 0);
 	Enemy enemy = new Enemy(null, 0, 0, 0, 0, 0);
