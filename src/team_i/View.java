@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 
+import javax.swing.JOptionPane;
+
 public class View extends Canvas implements Runnable {
 	/**
 	 * 
@@ -12,7 +14,7 @@ public class View extends Canvas implements Runnable {
 	private static final long serialVersionUID = 1L;
 	// 플레이어(전역), 총알, 배경 움직임, 아이템, 적, 충돌
 	static Player player[] = new Player[1];
-	static Bullet bullet = new Bullet(0, 0, 0, 0, 0);
+	static Bullet bullet = new Bullet(0, 0, 0, 0, 0, 0);
 	EBullet eBullet = new EBullet(0, 0, 0, 0, 0);
 	BackMove bm = new BackMove();
 	Item item = new Item(null, 0, 0, 0);
@@ -21,19 +23,22 @@ public class View extends Canvas implements Runnable {
 	Timer timer = new Timer();
 	double dAngle;//각도
 	static int board[][];//게임판
-	
+	static boolean gameover = false;
 	private Graphics bufferGraphics; //버퍼
 	private Image offscreen; // 버퍼
+	MainFrame mf;
 	Thread th;
 	public void start() {
 		th = new Thread(this);
 		th.start();
 	}
+	public void stop() {
+		
+		gameover = true;
+	}
 	public View() {
 		player[0] = new Player(this);
-//		board = new int[Const.gamePan_W][Const.gamePan_H];
 		item.itemSetting();	// 아이템 랜덤 생성
-		
 		addMouseMotionListener(bullet);
 		addMouseListener(bullet);
 		addKeyListener(player[0]);
@@ -46,10 +51,14 @@ public class View extends Canvas implements Runnable {
 			// TODO Auto-generated method stub
 
 			try {
-				while (true) {
+				while (gameover!=true) {
 					if (bullet.isPress) {//isPress가 True일때 총알 발사
 						bullet.bulletProcess();
 					}
+					if(Player.hp <= 0) {
+						stop();
+					}
+					collision.collision(bm);
 					enemy.enemySetting();// 적 랜덤 생성
 					eBullet.bulletProcess();
 					eBullet.moveBullet();
@@ -58,8 +67,6 @@ public class View extends Canvas implements Runnable {
 					enemy.moveEnemy();// 적 움직임
 					bm.backgroundMove();//배경 움직임
 					dAngle = getAngle(player[0].point(), bullet.getMousePointer());
-					//System.out.println(bullet.mouse); //마우스 위치 확인
-					collision.collision(item, bullet, enemy, bm);
 					player[0].KeyProcess();// 키 움직임
 					repaint();
 					Thread.sleep(10);
@@ -89,11 +96,11 @@ public class View extends Canvas implements Runnable {
 	//실질적으로 그릴 것
 	public void render(Graphics g) {
 		g.clearRect(0, 0, Const.gamePan_W, Const.gamePan_H);
-		
 		//배경
 		bm.background(g);
 		bm.fadeOutGraphics(g);
 		player[0].textDraw(g);
+		player[0].EndText(g);
 		//아이템
 		item.itemDraw(g);
 		//탄환

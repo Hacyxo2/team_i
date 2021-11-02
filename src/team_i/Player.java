@@ -22,13 +22,15 @@ public class Player implements KeyListener {
 	boolean KeyDown = false;
 	boolean KeyLeft = false;
 	boolean KeyRight = false;
-	private int speed = 5;
-	private int size = 40;
-	private int hp;
+	static int pSpeed = 5;
+	private int size = 30;
+	static int hp;
 	private int score = 0;
+	Color textColor = Color.white;
+	BackMove bm = new BackMove();
 	public Player(View view) {
 		this.view = view;
-		this.hp = 100;
+		hp = 100;
 		try {
 			image = ImageIO.read(new File("image/player.png"));
 			image = image.getScaledInstance(size, size, Image.SCALE_SMOOTH);
@@ -54,7 +56,7 @@ public class Player implements KeyListener {
 		return y + image.getWidth(view)/2;
 	}
 	public String getHp() {
-		String hp = Integer.toString(this.hp);
+		String hp = Integer.toString(Player.hp);
 		return hp;
 	}
 	public String getScore() {
@@ -70,14 +72,14 @@ public class Player implements KeyListener {
 	public void setImage(String imagePath) {
 		try {
 			this.image =ImageIO.read(new File(imagePath));
-			image = image.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+			image = image.getScaledInstance(size, size, Image.SCALE_SMOOTH);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	public void setHp(int a) {
-		this.hp += a;
+		hp += a;
 	}
 	public void setScore(int a) {
 		this.score += a;
@@ -88,11 +90,18 @@ public class Player implements KeyListener {
 	}
 
 	public void textDraw(Graphics g) {
-		g.setColor(Color.white);
+		g.setColor(textColor);
 		g.setFont(new Font("Gothic", Font.ITALIC, 30));
 		g.drawString(getHp(), 20, 20);
 		g.setFont(new Font("Gothic", Font.ITALIC, 30));
-		g.drawString(getScore(), 800, 20);
+		g.drawString(getScore(), 900, 20);
+	}
+	public void EndText(Graphics g) {
+		if(Player.hp <=0) {
+		g.setColor(textColor);
+		g.setFont(new Font("Gothic", Font.ITALIC, 55));
+		g.drawString("SCORE :" + getScore(), 350, 200);
+		}
 	}
 	public void playerDraw(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
@@ -124,13 +133,14 @@ public class Player implements KeyListener {
 			break;
 		}
 	}
+
+	
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
 		switch(e.getKeyCode()) {
 		case 32:
-			System.out.println(Timer.count);
 			break;
 		case 87:
 			KeyUp = false;
@@ -165,20 +175,20 @@ public class Player implements KeyListener {
 			y = Const.gamePan_H - (size * 2);
 
 		if(KeyUp == true) {
-			pos = collisionCheck(x, y,x, y - speed);
-			setY(y - speed);
+			pos = collisionCheck(x, y,x, y - pSpeed);
+			setY(y - pSpeed);
 		}
 		if(KeyDown == true) {
-			pos = collisionCheck(x, y, x, y + speed);
-			setY(y + speed);
+			pos = collisionCheck(x, y, x, y + pSpeed);
+			setY(y + pSpeed);
 		}
 		if(KeyLeft == true) {
-			pos = collisionCheck(x, y, x - speed, y);
-			setX(x - speed);	
+			pos = collisionCheck(x, y, x - pSpeed, y);
+			setX(x - pSpeed);	
 		}
 		if(KeyRight == true) {
-			pos = collisionCheck(x, y, x + speed, y);
-			setX(x + speed);
+			pos = collisionCheck(x, y, x + pSpeed, y);
+			setX(x + pSpeed);
 		}
 		pos[0] = x;
 		pos[1] = y;

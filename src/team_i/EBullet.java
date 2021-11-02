@@ -9,6 +9,7 @@ import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -17,15 +18,14 @@ public class EBullet {
 	private double y;
 	private double vx;
 	private double vy;
-
+	private double dAngle;
 	private int w = 10;
 	private int h = 10;
-	private double bulletSpeed = 4;
-	private double dAngle;
+	static int eBulletSpeed = 4;
+	static ArrayList<EBullet>bullets =new ArrayList<EBullet>();
 	private Image image;
-	static ArrayList<EBullet>bullets =new ArrayList<EBullet>(10);
 	boolean isPress = false;
-	private Color color = Color.red;
+	static Color ebColor = Color.red;
 	long prevtime = 0;
 	
 	public EBullet (double x, double y, double vx, double vy, double dAngle) {
@@ -47,26 +47,22 @@ public class EBullet {
 		AffineTransform old = g2.getTransform();
 		for (EBullet b : bullets)// 총알 그리기
 		{
-			g2.setColor(color);
+			g2.setColor(ebColor);
 			g2.rotate(Math.toRadians(b.dAngle), b.getCenterH(), b.getCenterW());
 			g2.drawRect((int) b.getX(), (int) b.getY(), b.getW(), b.getH());
 			g2.fillRect((int) b.getX(), (int) b.getY(), b.getW(), b.getH());
 			g2.setTransform(old);
 		}
 	}
+
 	public void moveBullet() {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				for (int i = 0; i < bullets.size(); i++) {
-					if (bullets.get(i).move() == false)// 화면을 벗어나면 삭제 하기
-					{
-						bullets.remove(i);
-						break;
-					}
-				}
-			}}).start();
+		for (int i = 0; i < bullets.size(); i++) {
+			if (bullets.get(i).move() == false)// 화면을 벗어나면 삭제 하기
+			{
+				bullets.remove(i);
+				break;
+			}
+		}
 	}
 
 	public boolean move() {
@@ -88,16 +84,37 @@ public class EBullet {
 				double x2 = View.player[0].point().x;
 				double y2 = View.player[0].point().y;
 				double d = Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
-				double vx = (x2 - x1) / d * (bulletSpeed+1);
-				double vy = (y2 - y1) / d * (bulletSpeed+1);
-				dAngle = getAngle(Enemy.imgList.get(i).point(), View.player[0].point());
+				double vx = (x2 - x1) / d * (eBulletSpeed+1);
+				double vy = (y2 - y1) / d * (eBulletSpeed+1);
+				dAngle = getAngle(new Point(), View.player[0].point());
 				EBullet b = new EBullet(x1, y1, vx, vy, dAngle);
 				bullets.add(b);
 				prevtime = System.currentTimeMillis();
 			}
 		}
 	}
-
+	static void bossBulletPattern() {
+		Random rand = new Random();
+		rand.setSeed(System.currentTimeMillis());
+		double x = 500;
+		double y = 400;
+		long prevtime = 0;
+		if (System.currentTimeMillis() - prevtime > 1000) {
+			EBullet b2 = new EBullet(x, y, 3, 3, 90);
+			bullets.add(b2);
+			System.out.print(1);
+			b2 = new EBullet(x, y, 3, 3, 0);
+			bullets.add(b2);
+			System.out.print(1);
+			b2 = new EBullet(x, y, 3, 3, 180);
+			bullets.add(b2);
+			System.out.print(1);
+			b2 = new EBullet(x, y, 3, 3, 270);
+			bullets.add(b2);
+			prevtime = System.currentTimeMillis();
+			
+		}
+	}
 	public double getX() {
 		return x;
 	}
@@ -106,9 +123,6 @@ public class EBullet {
 		return y;
 	}
 	
-	public double getBulletSpeed() {
-		return bulletSpeed;
-	}
 	public int getCenterH() {
 		return (int) x + h/2;
 	}
@@ -135,11 +149,4 @@ public class EBullet {
 		else
 			return Math.atan2(dy, dx) * (180.0 / Math.PI);
 	}
-//	public void setColor(int type) {
-//		if(type == 1){
-//			this.color = Color.green;
-//		}
-//		else
-//			this.color = Color.MAGENTA;
-//	}
 }

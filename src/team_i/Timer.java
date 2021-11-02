@@ -12,7 +12,7 @@ public class Timer {
 				// TODO Auto-generated method stub
 				while (true) {
 					try {
-						if(count % 3 == 0)
+						if(count % 5 == 0)
 							Enemy.nomal = 3;
 						if(count % 3 == 0)
 							Enemy.hard  =5;

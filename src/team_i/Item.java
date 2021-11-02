@@ -14,7 +14,7 @@ public class Item {
 	private int x;
 	private int y;
 
-	ArrayList<Item> imgList = new ArrayList<>(100);
+	static ArrayList<Item> imgList = new ArrayList<>(100);
 
 	public Item(Image image, int type, int x, int y) {
 		this.image = image;
@@ -25,7 +25,10 @@ public class Item {
 	
 	class test1{
 		ImageIcon itemIc1 = new ImageIcon("image/block.png");
-		Image  item1 = itemIc1.getImage();
+		ImageIcon itemIc2 = new ImageIcon("image/item.png");
+		Image item1 = itemIc1.getImage();
+		Image item2 = itemIc1.getImage();
+		
 	}
 
 	public void itemSetting() {
@@ -37,12 +40,12 @@ public class Item {
 //			if(count == 0 || emdwkd[i] == count) {
 				imgList.add(new Item(test1.item1, rand.nextInt(2), 1200 + rand.nextInt(200), rand.nextInt(800)));
 				imgList.add(new Item(test1.item1, rand.nextInt(2), 1200 + rand.nextInt(200), rand.nextInt(800)));
-				imgList.add(new Item(test1.item1, rand.nextInt(2), 1200 + rand.nextInt(200), rand.nextInt(800)));
+				imgList.add(new Item(test1.item2, rand.nextInt(2), 1200 + rand.nextInt(200), rand.nextInt(800)));
 //			}
 //		}
 //		count++;
 	}
-	public void initItem(int index) {
+	static void initItem(int index) {
 		Random rand = new Random();
 		rand.setSeed(System.currentTimeMillis());
 		imgList.get(index).setX(1200+rand.nextInt(200));
@@ -51,8 +54,14 @@ public class Item {
 	}
 	
 	public void itemDraw(Graphics g) {
+		test1 test1 = new test1();
 		for (int i = 0; i < imgList.size(); i++) {
-			g.drawImage(imgList.get(i).getImage(), imgList.get(i).getX(), imgList.get(i).getY(), null);
+			if(imgList.get(i).getType() == 0) {
+				g.drawImage(test1.item1, imgList.get(i).getX(), imgList.get(i).getY(), null);
+			}
+			else if(imgList.get(i).getType() == 1) {
+				g.drawImage(test1.item2, imgList.get(i).getX(), imgList.get(i).getY(), null);
+			}
 		}
 	}
 	public void moveItem() {
@@ -73,7 +82,7 @@ public class Item {
 		return true;
 	}
 
-	public void itemEffect(int type) {
+	static void itemEffect(int type) {
 		if (type == 1) {
 			View.player[0].setImage("image/person.png");
 			View.bullet.setColor(1);
@@ -98,7 +107,7 @@ public class Item {
 	}
 	public void setImage(Image image) {
 		this.image = image;
-	} 
+	}  
 	public void setX(int x) {
 		this.x = x;
 	}
@@ -108,11 +117,4 @@ public class Item {
 	public void setType(int type) {
 		this.type = type;
 	}
-//	public void setEffectBm(int count) {
-//		if(count==) {
-//			
-//		}
-//		else if
-//		else
-//	}
 }

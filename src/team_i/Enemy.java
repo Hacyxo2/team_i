@@ -19,7 +19,6 @@ public class Enemy {
 	private double dAngle;
 	static ArrayList<Enemy> imgList = new ArrayList<>(10);
 	View view;
-	private long prevtime = 0;
 	public Enemy(Image image, int type, int x, int y, double dAngle) {
 		this.dAngle = dAngle;
 		this.image = image;
@@ -32,7 +31,7 @@ public class Enemy {
 		ImageIcon enemyIc1 = new ImageIcon("image/Enemy.png");
 		Image enemy1 = enemyIc1.getImage();
 		ImageIcon enemyIc2 = new ImageIcon("image/car.png");
-		Image enemy2 = enemyIc1.getImage();
+		Image enemy2 = enemyIc2.getImage();
 	}
 
 	public void enemySetting() {
@@ -52,7 +51,16 @@ public class Enemy {
 	}
 	public void moveEnemy() {
 		for (int i = 0; i< imgList.size(); i++) {
+			if(imgList.get(i).type == 0) {
 			imgList.get(i).setX(imgList.get(i).getX()-3);
+			if (imgList.get(i).move() == false)// 화면을 벗어나면 삭제 하기
+			{
+				imgList.remove(i);
+				break;
+			}
+			}
+			else
+				imgList.get(i).setX(imgList.get(i).getX()+3);
 			if (imgList.get(i).move() == false)// 화면을 벗어나면 삭제 하기
 			{
 				imgList.remove(i);
@@ -68,24 +76,25 @@ public class Enemy {
 	}
 
 	public void appearTiming() {
-		boolean a = false;
 		Random rand = new Random();
 		rand.setSeed(System.currentTimeMillis());
 		test1 test1 = new test1();
 		if (Timer.count < 28 && Timer.count % 3 == 0 && nomal != 0) {
 			for (int i = 0; i <= nomal; i++) {
-				imgList.add(new Enemy(test1.enemy1, 0, 1100, rand.nextInt(800), dAngle));
+				imgList.add(new Enemy(test1.enemy1, 0, 1000 + rand.nextInt(200), rand.nextInt(750), dAngle));
+				EBullet.bossBulletPattern();
 				nomal--;
 			}
 		}
-		else if (30 < Timer.count || Timer.count <= 88 && Timer.count % 3 == 0 && hard != 0) {
+		else if ((31 < Timer.count && Timer.count <= 60)&& Timer.count % 3 == 0 && hard != 0) {
 			for (int i = 0; i <= hard; i++) {
-				imgList.add(new Enemy(test1.enemy1, 1, 1100, rand.nextInt(800), dAngle));
+				imgList.add(new Enemy(test1.enemy2, 1, 50, rand.nextInt(750), dAngle));
 				hard--;
 			}
 		}
+//		else if
 		else {
-		
+				
 			}
 	}
 	public double getAngle(Point start, Point end) {

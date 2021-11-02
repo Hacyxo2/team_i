@@ -1,23 +1,13 @@
 package team_i;
 
 public class Collision {
-	private Item item;
-	private Bullet bullet;
-	private Enemy enemy;
-	private BackMove bm;
-	private Audio hitSound;
-	private Audio hitSound2;
-	private Audio itemCollect;
-	public void collision( Item item, Bullet bullet, Enemy enemy, BackMove bm) {
-		this.item = item;
+	Audio hitSound = new Audio("audio/hit.wav", false);// 총알과 구조물이 피격시
+	Audio hitSound2 = new Audio("audio/playerhit.wav", false); // 플레어어와 구조들이 피격시
+	Audio itemCollect = new Audio("audio/itemcollect.wav", false);
+	BackMove bm;
+	public void collision(BackMove bm) {
 		this.bm = bm;
-		this.bullet = bullet;
-		this.enemy = enemy;
-		hitSound = new Audio("audio/hit.wav", false);// 총알과 구조물이 피격시
-		hitSound2 = new Audio("audio/playerhit.wav", false); // 플레어어와 구조들이 피격시
-		itemCollect = new Audio("audio/itemcollect.wav", false); 
 		new Thread(new Runnable() {
-			
 			@Override
 			public void run() {	
 				// TODO Auto-generated method stub
@@ -33,19 +23,17 @@ public class Collision {
 			}
 		}).start();
 	}
-
 	private void playerCollision() {
-		for (int i = 0; i < item.imgList.size(); i++) {
+		for (int i = 0; i < Item.imgList.size(); i++) {
 			// 아이템이 플레이어에 닿으면 사라짐
-			if (hit(View.player[0].getX(), View.player[0].getY(), item.imgList.get(i).getX(),
-					item.imgList.get(i).getY(), View.player[0].getImage().getWidth(null),
-					View.player[0].getImage().getHeight(null), item.imgList.get(i).getImage().getHeight(null),
-					item.imgList.get(i).getImage().getWidth(null))) {
-				System.out.println(item.imgList.get(i).getType());
-				item.itemEffect(item.imgList.get(i).getType());
-				item.initItem(i);
+			if (hit(View.player[0].getX(), View.player[0].getY(), Item.imgList.get(i).getX(),
+					 Item.imgList.get(i).getY(), View.player[0].getImage().getWidth(null),
+					View.player[0].getImage().getHeight(null),  Item.imgList.get(i).getImage().getHeight(null),
+					 Item.imgList.get(i).getImage().getWidth(null))) {
+				System.out.println( Item.imgList.get(i).getType());
+				Item.itemEffect(Item.imgList.get(i).getType());
+				Item.initItem(i);
 				itemCollect.start();
-
 				View.player[0].setScore(50);
 			}
 		}
@@ -55,7 +43,7 @@ public class Collision {
 					Enemy.imgList.get(i).getY(), View.player[0].getImage().getWidth(null),
 					View.player[0].getImage().getHeight(null), Enemy.imgList.get(i).getImage().getHeight(null),
 					Enemy.imgList.get(i).getImage().getWidth(null))) {
-				View.player[0].setHp(-50);
+				View.player[0].setHp(-10);
 				Enemy.imgList.remove(i);
 				hitSound2.start();
 
@@ -69,28 +57,26 @@ public class Collision {
 			if (hit(View.player[0].getX(), View.player[0].getY(), (int) EBullet.bullets.get(j).getX(), 
 					(int) EBullet.bullets.get(j).getY(), View.player[0].getImage().getWidth(null), View.player[0].getImage().getHeight(null),
 					EBullet.bullets.get(j).getW(), EBullet.bullets.get(j).getH())) {
-				View.player[0].setHp(-30);
+				View.player[0].setHp(-10);
 				bm.fadeOutRed();
 				EBullet.bullets.remove(j);
 				hitSound2.start();
-
 			}
 		}
 	}
 
 	private void bulletCollision() {
 		// 총알이 아이템을 맞추면 아이템이 사라짐, 총알도 사라짐
-		for (int i = 0; i < item.imgList.size(); i++) {
-			for (int j = 0; j < bullet.getBullets().size(); j++) {
-				if (hit((int) bullet.getBullets().get(j).getX(), (int) bullet.getBullets().get(j).getY(),
-						item.imgList.get(i).getX(), item.imgList.get(i).getY(), bullet.getBullets().get(j).getW(),
-						bullet.getBullets().get(j).getH(), item.imgList.get(i).getImage().getHeight(null),
-						item.imgList.get(i).getImage().getWidth(null))) {
-					item.initItem(i);
-					System.out.println(i);
+		for (int i = 0; i < Item.imgList.size(); i++) {
+			for (int j = 0; j < Bullet.bullets.size(); j++) {
+				if (hit((int) Bullet.bullets.get(j).getX(), (int) Bullet.bullets.get(j).getY(),
+						Item.imgList.get(i).getX(), Item.imgList.get(i).getY(), Bullet.bullets.get(j).getW(),
+						Bullet.bullets.get(j).getH(), Item.imgList.get(i).getImage().getHeight(null),
+						Item.imgList.get(i).getImage().getWidth(null))) {
+					Item.initItem(i);
 					View.player[0].setScore(50);
-					item.itemEffect(item.imgList.get(i).getType());
-					bullet.getBullets().remove(j);
+					Item.itemEffect(Item.imgList.get(i).getType());
+					Bullet.bullets.remove(j);
 					itemCollect.start();
 
 				}
@@ -98,14 +84,14 @@ public class Collision {
 		}
 		// 총알이 적을 맞추면 적이 사라짐, 총알도 사라짐
 		for (int i = 0; i < Enemy.imgList.size(); i++) {
-			for (int j = 0; j < bullet.getBullets().size(); j++) {
-				if (hit((int) bullet.getBullets().get(j).getX(), (int) bullet.getBullets().get(j).getY(),
+			for (int j = 0; j <Bullet.bullets.size(); j++) {
+				if (hit((int)Bullet.bullets.get(j).getX(), (int)Bullet.bullets.get(j).getY(),
 						Enemy.imgList.get(i).getX(), Enemy.imgList.get(i).getY(), 
-						bullet.getBullets().get(j).getW(), bullet.getBullets().get(j).getH(),
+						Bullet.bullets.get(j).getW(),Bullet.bullets.get(j).getH(),
 						Enemy.imgList.get(i).getImage().getHeight(null), Enemy.imgList.get(i).getImage().getWidth(null))) {
 					View.player[0].setScore(50);
 					Enemy.imgList.remove(i);
-					bullet.getBullets().remove(j);
+					Bullet.bullets.remove(j);
 					hitSound.start();
 
 				}

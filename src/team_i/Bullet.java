@@ -17,21 +17,23 @@ public class Bullet implements MouseListener, MouseMotionListener {
 	private double vy;
 	private int w = 5;
 	private int h = 5;
-	private double bulletSpeed = 6;
+	private int damge = 10;
 	private double dAngle;
-	private ArrayList<Bullet> bullets = new ArrayList<Bullet>(100);
+	static int bulletSpeed = 10;
+	static ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 	private Audio hitSound = new Audio("audio/hit2.wav", false); //ÃÑ¾Ë ¹ß»çÀ½
 	private Point mouse = new Point(0, 0);
 	boolean isPress = false;
 	Color color = Color.cyan;
 	long prevtime = 0;
 	
-	public Bullet(double x, double y, double vx, double vy, double dAngle) {
+	public Bullet(double x, double y, double vx, double vy, double dAngle, int damge) {
 		this.dAngle = dAngle;
 		this.x = x;
 		this.y = y;
 		this.vx = vx;
 		this.vy = vy;
+		this.damge = damge;
 	}
 	public void bulletDraw(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
@@ -82,7 +84,7 @@ public class Bullet implements MouseListener, MouseMotionListener {
 			double vx = (x2 - x1) / d * bulletSpeed;
 			double vy = (y2 - y1) / d * bulletSpeed;
 			dAngle = getAngle(View.player[0].point(), getMousePointer());
-			Bullet b = new Bullet(x1, y1, vx, vy, dAngle);
+			Bullet b = new Bullet(x1, y1, vx, vy, dAngle, damge);
 			bullets.add(b);
 			prevtime = System.currentTimeMillis();
 		}
@@ -95,10 +97,7 @@ public class Bullet implements MouseListener, MouseMotionListener {
 	public double getY() {
 		return y;
 	}
-	
-	public double getBulletSpeed() {
-		return bulletSpeed;
-	}
+
 	public Point getMousePointer() {
 		return mouse;
 	}
@@ -128,6 +127,9 @@ public class Bullet implements MouseListener, MouseMotionListener {
 		else
 			this.color = Color.MAGENTA;
 	}
+	public void setDamge(int damge) {
+		this.damge = damge;
+	}
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		// TODO Auto-generated method stub
@@ -147,7 +149,6 @@ public class Bullet implements MouseListener, MouseMotionListener {
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
 		isPress = true;
-		bulletProcess();
 	}
 	@Override
 	public void mouseReleased(MouseEvent e) {
