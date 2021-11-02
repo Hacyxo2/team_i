@@ -82,7 +82,6 @@ public class Enemy {
 		if (Timer.count < 28 && Timer.count % 3 == 0 && nomal != 0) {
 			for (int i = 0; i <= nomal; i++) {
 				imgList.add(new Enemy(test1.enemy1, 0, 1000 + rand.nextInt(200), rand.nextInt(750), dAngle));
-				EBullet.bossBulletPattern();
 				nomal--;
 			}
 		}

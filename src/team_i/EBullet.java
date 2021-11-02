@@ -9,7 +9,6 @@ import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -93,28 +92,7 @@ public class EBullet {
 			}
 		}
 	}
-	static void bossBulletPattern() {
-		Random rand = new Random();
-		rand.setSeed(System.currentTimeMillis());
-		double x = 500;
-		double y = 400;
-		long prevtime = 0;
-		if (System.currentTimeMillis() - prevtime > 1000) {
-			EBullet b2 = new EBullet(x, y, 3, 3, 90);
-			bullets.add(b2);
-			System.out.print(1);
-			b2 = new EBullet(x, y, 3, 3, 0);
-			bullets.add(b2);
-			System.out.print(1);
-			b2 = new EBullet(x, y, 3, 3, 180);
-			bullets.add(b2);
-			System.out.print(1);
-			b2 = new EBullet(x, y, 3, 3, 270);
-			bullets.add(b2);
-			prevtime = System.currentTimeMillis();
-			
-		}
-	}
+	
 	public double getX() {
 		return x;
 	}
