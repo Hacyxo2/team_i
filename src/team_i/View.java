@@ -16,7 +16,7 @@ public class View extends Canvas implements Runnable {
 	EBullet eBullet = new EBullet(0, 0, 0, 0, 0);
 	BackMove bm = new BackMove();
 	Item item = new Item(null, 0, 0, 0);
-	Enemy enemy = new Enemy(null, 0, 0, 0, 0, 0);
+	Enemy enemy = new Enemy(null, 0, 0, 0, 0);
 	Collision collision = new Collision();
 	Timer timer = new Timer();
 	double dAngle;//각도
@@ -25,14 +25,15 @@ public class View extends Canvas implements Runnable {
 	private Graphics bufferGraphics; //버퍼
 	private Image offscreen; // 버퍼
 	Thread th;
-	
+	public void start() {
+		th = new Thread(this);
+		th.start();
+	}
 	public View() {
 		player[0] = new Player(this);
 //		board = new int[Const.gamePan_W][Const.gamePan_H];
 		item.itemSetting();	// 아이템 랜덤 생성
-		enemy.enemySetting();// 적 랜덤 생성
-		th = new Thread(this);
-		th.start();
+		
 		addMouseMotionListener(bullet);
 		addMouseListener(bullet);
 		addKeyListener(player[0]);
@@ -49,6 +50,7 @@ public class View extends Canvas implements Runnable {
 					if (bullet.isPress) {//isPress가 True일때 총알 발사
 						bullet.bulletProcess();
 					}
+					enemy.enemySetting();// 적 랜덤 생성
 					eBullet.bulletProcess();
 					eBullet.moveBullet();
 					bullet.moveBullet();// 총알 움직임

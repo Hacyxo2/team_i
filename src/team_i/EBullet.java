@@ -5,9 +5,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.IOException;
@@ -21,14 +18,14 @@ public class EBullet {
 	private double vx;
 	private double vy;
 
-	private int w = 40;
-	private int h = 20;
+	private int w = 10;
+	private int h = 10;
 	private double bulletSpeed = 4;
 	private double dAngle;
 	private Image image;
-	static ArrayList<EBullet>bullets =new ArrayList<EBullet>(100);
+	static ArrayList<EBullet>bullets =new ArrayList<EBullet>(10);
 	boolean isPress = false;
-	Color color = Color.cyan;
+	private Color color = Color.red;
 	long prevtime = 0;
 	
 	public EBullet (double x, double y, double vx, double vy, double dAngle) {
@@ -50,6 +47,7 @@ public class EBullet {
 		AffineTransform old = g2.getTransform();
 		for (EBullet b : bullets)// 총알 그리기
 		{
+			g2.setColor(color);
 			g2.rotate(Math.toRadians(b.dAngle), b.getCenterH(), b.getCenterW());
 			g2.drawRect((int) b.getX(), (int) b.getY(), b.getW(), b.getH());
 			g2.fillRect((int) b.getX(), (int) b.getY(), b.getW(), b.getH());
@@ -57,21 +55,24 @@ public class EBullet {
 		}
 	}
 	public void moveBullet() {
-		for (int i = 0; i < bullets.size(); i++) {
-			if (bullets.get(i).move() == false)// 화면을 벗어나면 삭제 하기
-			{
-				bullets.remove(i);
-				break;
-			}
-		}
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				for (int i = 0; i < bullets.size(); i++) {
+					if (bullets.get(i).move() == false)// 화면을 벗어나면 삭제 하기
+					{
+						bullets.remove(i);
+						break;
+					}
+				}
+			}}).start();
 	}
 
 	public boolean move() {
 		x += vx;
 		y += vy;
 		if(x < 0 || x > Const.gamePan_W || y < 0 || y > Const.gamePan_H) {
-			x = 0;
-			y = 0;
 			return false;				
 		}
 		return true;
@@ -92,7 +93,6 @@ public class EBullet {
 				dAngle = getAngle(Enemy.imgList.get(i).point(), View.player[0].point());
 				EBullet b = new EBullet(x1, y1, vx, vy, dAngle);
 				bullets.add(b);
-				
 				prevtime = System.currentTimeMillis();
 			}
 		}

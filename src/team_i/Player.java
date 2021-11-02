@@ -70,6 +70,7 @@ public class Player implements KeyListener {
 	public void setImage(String imagePath) {
 		try {
 			this.image =ImageIO.read(new File(imagePath));
+			image = image.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
