@@ -33,13 +33,6 @@ public class EBullet {
 		this.y = y;
 		this.vx = vx;
 		this.vy = vy;
-		try {
-			image = ImageIO.read(new File("image/bullet.png"));
-			image = image.getScaledInstance(w, h, Image.SCALE_SMOOTH);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	public void bulletDraw(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;

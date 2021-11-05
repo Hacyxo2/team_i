@@ -24,11 +24,8 @@ public class Item {
 	}
 	
 	class test1{
-		ImageIcon itemIc1 = new ImageIcon("image/block.png");
-		ImageIcon itemIc2 = new ImageIcon("image/item.png");
+		ImageIcon itemIc1 = new ImageIcon("image/item.png");
 		Image item1 = itemIc1.getImage();
-		Image item2 = itemIc1.getImage();
-		
 	}
 
 	public void itemSetting() {
@@ -40,7 +37,7 @@ public class Item {
 //			if(count == 0 || emdwkd[i] == count) {
 				imgList.add(new Item(test1.item1, rand.nextInt(2), 1200 + rand.nextInt(200), rand.nextInt(800)));
 				imgList.add(new Item(test1.item1, rand.nextInt(2), 1200 + rand.nextInt(200), rand.nextInt(800)));
-				imgList.add(new Item(test1.item2, rand.nextInt(2), 1200 + rand.nextInt(200), rand.nextInt(800)));
+				imgList.add(new Item(test1.item1, rand.nextInt(2), 1200 + rand.nextInt(200), rand.nextInt(800)));
 //			}
 //		}
 //		count++;
@@ -54,14 +51,8 @@ public class Item {
 	}
 	
 	public void itemDraw(Graphics g) {
-		test1 test1 = new test1();
 		for (int i = 0; i < imgList.size(); i++) {
-			if(imgList.get(i).getType() == 0) {
-				g.drawImage(test1.item1, imgList.get(i).getX(), imgList.get(i).getY(), null);
-			}
-			else if(imgList.get(i).getType() == 1) {
-				g.drawImage(test1.item2, imgList.get(i).getX(), imgList.get(i).getY(), null);
-			}
+				g.drawImage(imgList.get(i).getImage(), imgList.get(i).getX(), imgList.get(i).getY(), null);
 		}
 	}
 	public void moveItem() {
@@ -84,7 +75,7 @@ public class Item {
 
 	static void itemEffect(int type) {
 		if (type == 1) {
-			View.player[0].setImage("image/person.png");
+			View.player[0].setImage("image/player2.png");
 			View.bullet.setColor(1);
 		}
 		else if(type == 0){

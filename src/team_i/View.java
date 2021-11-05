@@ -26,14 +26,12 @@ public class View extends Canvas implements Runnable {
 	static boolean gameover = false;
 	private Graphics bufferGraphics; //버퍼
 	private Image offscreen; // 버퍼
-	MainFrame mf;
 	Thread th;
 	public void start() {
 		th = new Thread(this);
 		th.start();
 	}
 	public void stop() {
-		
 		gameover = true;
 	}
 	public View() {

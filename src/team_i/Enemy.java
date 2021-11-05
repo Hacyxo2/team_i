@@ -30,7 +30,7 @@ public class Enemy {
 	class test1{
 		ImageIcon enemyIc1 = new ImageIcon("image/Enemy.png");
 		Image enemy1 = enemyIc1.getImage();
-		ImageIcon enemyIc2 = new ImageIcon("image/car.png");
+		ImageIcon enemyIc2 = new ImageIcon("image/Enemy2.png");
 		Image enemy2 = enemyIc2.getImage();
 	}
 

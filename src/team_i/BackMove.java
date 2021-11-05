@@ -41,7 +41,6 @@ public class BackMove {
 				for (int i = 0; i < 256; i += 2) {
 					backFade = new Color(0, 0, 0, i);
 					try {
-						System.out.println("tlqkf");
 						Thread.sleep(10);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
